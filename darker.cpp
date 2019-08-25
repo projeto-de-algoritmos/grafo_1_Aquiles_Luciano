@@ -2,51 +2,51 @@
 using namespace std;
 const long long MAX {1005};
 
-vector <pair<int,int>> cord = {
-    {0,0},{0,1},{1,0},{1,1},
-    {-1,-1},{-1,0},{0,-1}
-};
+vector <pair<int,int>> adj = { {0,1},{1,0},{-1,0},{0,-1} };
 queue <pair<int,int>> que;
 vector <vector<bool>> visited(MAX);
-vector <pair<int,int>> dist[MAX*2];
-// process is a lambda function. it is specified when called the bfs function.
-void bfs(int s, const function<void(pair<int,int>)>& process)
-{
-     
-    dist[que.front] = 0;
+vector <vector<int>> dist(MAX);
 
+void bfs(size_t h,size_t w)
+{
+    //the queue is alread populated with the nodes we need to start
+    dist[que.front().first][que.front().second] = 0;
     while (not que.empty())
     {
         auto u = que.front();
         que.pop();
-
-        process(u);
-
-        for (const auto& v : cord)
+        for (const auto& v : adj)
         {
-            if (visited[v.first][v.second])
+            cout << u.first + v.first << u.second + v.second;
+            if (visited[u.first + v.first][u.second + v.second] 
+                or u.first + v.first > h-1
+                or u.first + v.first < 0
+                or u.second + v.second > w-1
+                or u.second + v.second < 0 )
                 continue;
 
-            visited[v.first][v.second] = true;
-            dist[v.first][v.second] = dist[u] + 1;
+            visited[u.first + v.first][u.second + v.second] = true;
+            dist[v.first][v.second] = dist[u.first][u.second] + 1;
             que.push(v);
         }
     }
 }
 
 int main(){
-    ios::sync_with_stdio(false);
+    // turn off the sinc with stdio.h to make the program faster
+    //ios::sync_with_stdio(false);
     size_t h,w;
     char dot;
     cin >> h >> w; 
     
     for (int i = 0; i < h; i++) { 
         // declare  the i-th row to size of column 
-        visited[i] = vector<bool>(w); 
+        visited[i] = vector<bool>(w);
+        dist[i] =  vector<int>(w);
     }
 
-    for(int i = 0; i<h; i++){
-        for(int j = 0; j<w; j++){
+    for(size_t i = 0; i<h; i++){
+        for(size_t j = 0; j<w; j++){
             cin >> dot;
             // mark the node as unvisited
             if(dot == '.') visited[i][j] = false;
@@ -58,7 +58,10 @@ int main(){
             }
         }
     }
+    
+    bfs(h,w);
 
+    cout << dist[h-1][w-1] << endl;
 
     return 0;
 }
