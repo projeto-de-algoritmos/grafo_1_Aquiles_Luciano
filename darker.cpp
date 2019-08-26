@@ -6,7 +6,6 @@ vector <pair<int,int>> adj = { {0,1},{1,0},{-1,0},{0,-1} };
 queue <pair<int,int>> que;
 vector <vector<bool>> visited(MAX,vector<bool>(MAX));
 vector <vector<int>> dist(MAX,vector<int>(MAX));
-
 pair <int,int> bfs(int h,int w)
 {
     pair <int,int> u;
@@ -16,14 +15,16 @@ pair <int,int> bfs(int h,int w)
     {
         u = que.front();
         que.pop();
+        //iterate over adj vector atributing to v
         for (const auto& v : adj)
         {
+            //verifing the boundaries of matrix
             if (u.first + v.first > h-1
                 or u.first + v.first < 0
                 or u.second + v.second > w-1
                 or u.second + v.second < 0 )
                 continue;
-            
+            //eviting segmentation fault
             if (visited[u.first + v.first][u.second + v.second])
                 continue;
 
@@ -55,9 +56,8 @@ int main(){
             }
         }
     }
-    //capture the distance betwen the first read node and the last 
+    //capture the distance betwen the first readed node and the last 
     auto res = bfs(h,w);
-
     cout << dist[res.first][res.second] << endl;
 
     return 0;
