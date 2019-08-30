@@ -6,6 +6,18 @@ vector <pair<int,int>> adj = { {0,1},{1,0},{-1,0},{0,-1} };
 queue <pair<int,int>> que;
 vector <vector<bool>> visited(MAX,vector<bool>(MAX));
 vector <vector<int>> dist(MAX,vector<int>(MAX));
+
+void print_matrix(int h,int w){
+    for(int i=0;i<h;i++){
+        cout << "\n";
+        for(int j=0;j<w;j++){
+            cout << visited[i][j];
+        }
+    }
+    cout << "\n";
+}
+
+
 pair <int,int> bfs(int h,int w)
 {
     pair <int,int> u;
@@ -15,6 +27,7 @@ pair <int,int> bfs(int h,int w)
     {
         u = que.front();
         que.pop();
+
         //iterate over adj vector atributing to v
         for (const auto& v : adj)
         {
@@ -24,11 +37,12 @@ pair <int,int> bfs(int h,int w)
                 or u.second + v.second > w-1
                 or u.second + v.second < 0 )
                 continue;
-            //eviting segmentation fault
+            //avoiding segmentation fault
             if (visited[u.first + v.first][u.second + v.second])
                 continue;
 
             visited[u.first + v.first][u.second + v.second] = true;
+            //print_matrix(h,w);
             dist[u.first + v.first][u.second + v.second] = dist[u.first][u.second] + 1;
             que.push({u.first + v.first,u.second + v.second});
         }
