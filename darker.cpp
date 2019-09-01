@@ -11,7 +11,8 @@ void print_matrix(int h,int w){
     for(int i=0;i<h;i++){
         cout << "\n";
         for(int j=0;j<w;j++){
-            cout << visited[i][j];
+            if(visited[i][j])cout << '#' ;
+            else cout << '.';
         }
     }
     cout << "\n";
@@ -54,12 +55,17 @@ int main(){
     // turn off the sinc with stdio.h to make the program faster
     ios::sync_with_stdio(false);
     int h,w;
-    char dot;
+    srand(time(NULL));
+    char dot,dots[2] = {'.','#'};
     cin >> h >> w; 
 
     for(int i = 0; i<h; i++){
         for(int j = 0; j<w; j++){
             cin >> dot;
+            /*
+            auto ind = rand()% 2;
+            dot = dots[ind];
+            */
             // mark the node as unvisited
             if(dot == '.') visited[i][j] = false;
             else if(dot == '#'){
@@ -70,6 +76,7 @@ int main(){
             }
         }
     }
+    //print_matrix(h,w);
     //capture the distance betwen the first readed node and the last 
     auto res = bfs(h,w);
     cout << dist[res.first][res.second] << endl;
