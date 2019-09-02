@@ -18,6 +18,27 @@ void print_matrix(int h,int w){
     cout << "\n";
 }
 
+void dfs(pair<int,int> u,int h,int w)
+{
+    
+    if (visited[u.first][u.second]) return;
+
+    visited[u.first][u.second] = true;
+    print_matrix(h,w);
+
+    for (const auto& v : adj){
+        //verifing the boundaries of matrix
+        if (u.first + v.first > h-1
+            or u.first + v.first < 0
+            or u.second + v.second > w-1
+            or u.second + v.second < 0 )
+            continue;
+        //avoiding segmentation fault
+        if (visited[u.first + v.first][u.second + v.second])
+            continue;
+        dfs({u.first + v.first,u.second + v.second}, h, w);
+    }
+}
 
 pair <int,int> bfs(int h,int w)
 {
@@ -79,6 +100,10 @@ int main(){
     //print_matrix(h,w);
     //capture the distance betwen the first readed node and the last 
     auto res = bfs(h,w);
+    /*
+    visited[que.front().first][que.front().second] = false;
+    dfs(que.front(),h,w);
+    */
     cout << dist[res.first][res.second] << endl;
 
     return 0;
